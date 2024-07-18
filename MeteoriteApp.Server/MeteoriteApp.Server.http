@@ -1,0 +1,6 @@
+@MeteoriteApp.Server_HostAddress = http://localhost:5261
+
+GET {{MeteoriteApp.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
