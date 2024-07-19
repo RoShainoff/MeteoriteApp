@@ -44,6 +44,11 @@
         {
             string cacheKey = filter.GetCacheKey(pageNumber, pageSize);
 
+            if (_cache.TryGetValue(cacheKey, out List<MeteoriteGroup> cachedData))
+            {
+                return cachedData!.ToPagedResponse();
+            }
+
             using var context = _context.CreateDbContext();
 
             var query = context.Meteorites.AsQueryable();
@@ -118,14 +123,11 @@
             {
                 groupedQuery = groupedQuery.ToPaged(pageNumber, pageSize);
             }
+                        
+            cachedData = await groupedQuery.ToListAsync();
 
-            if (!_cache.TryGetValue(cacheKey, out List<MeteoriteGroup> cachedData))
-            {
-                cachedData = await groupedQuery.ToListAsync();
-
-                _cache.Set(cacheKey, cachedData, _cacheDuration);
-            }
-
+            _cache.Set(cacheKey, cachedData, _cacheDuration);
+            
             return cachedData!.ToPagedResponse(totalCount);
         }
 

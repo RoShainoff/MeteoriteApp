@@ -37,7 +37,7 @@ namespace MeteoriteApp.Server.BLL.Helpers
                 RecLong = meteorite.Longitude?.ToString(),
             };
 
-        public static string GetCacheKey (this MeteoriteGroupFilter meteoriteFilter, int? pageNumber, int? pageSize)
+        public static string GetCacheKey (this MeteoriteGroupFilter meteoriteFilter, int pageNumber, int pageSize)
         {
             var sb = new StringBuilder(nameof(MeteoriteGroupFilter));
 
